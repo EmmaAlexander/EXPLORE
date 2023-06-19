@@ -14,9 +14,9 @@ from sklearn import metrics
 import cmasher 
 import glob as glob
 
-label_file='10percent/10percent_labels.txt'
-pyssed_files_glob='10percent/10percent_part*.dat'
-pyssed_file='10percent/10percent_full.dat'
+label_file='/Users/emma/Documents/GitHub/PySSED/90percent/90percent_labels.txt'
+pyssed_files_glob='/Users/emma/Documents/GitHub/PySSED/90percent/output_run*.dat'
+pyssed_file='/Users/emma/Documents/GitHub/PySSED/90percent/90percent_full.dat'
 
 def param_update():
 
@@ -36,7 +36,7 @@ def glob_files(globstr):
 		sub_df = pd.read_table(file,skiprows=1,header=[1,2,3,4,5,6,7],low_memory=False)
 		df_list.append(sub_df)
 		if len(sub_df.index)<9010:
-			print("Fewer than expected entries for {}: {}".format(file,len(sub_df.index) ))
+			print("Entries for {}: {}".format(file,len(sub_df.index) ))
 	df=pd.concat(df_list)
 
 	print("Processing data")
@@ -54,7 +54,7 @@ def glob_files(globstr):
 	#    print(i,output_df.dtypes[i])
 	numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
 	features=df.replace('[]', np.nan).replace('--', np.nan)#.select_dtypes(include=numerics)
-	features.to_csv('10percent/10percent_full.dat',sep='\t', index=False, quoting=3,escapechar="\t",na_rep='[]',header=True)
+	features.to_csv(pyssed_file,sep='\t', index=False, quoting=3,escapechar="\t",na_rep='[]',header=True)
 
 	return features
 
@@ -64,8 +64,8 @@ def read_files(filestr):
 
 def main():
 	param_update()
-
-	#features=glob_files(pyssed_files_glob)
+	print("starting")
+	features=glob_files(pyssed_files_glob)
 	#print("Reading label file")
 	labels=pd.read_table(label_file)
 	features = pd.read_table(pyssed_file,skiprows=1,header=[1,2,3,4,5,6,7],low_memory=False)
